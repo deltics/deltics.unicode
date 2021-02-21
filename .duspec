@@ -1,0 +1,22 @@
+{
+  "id":"deltics.unicode",
+  "version":"",
+  "summary":"Core Unicode support, including types to disciminate between strings of different type and various helper routines for working with different Unicode encodings.",
+  "tags":[
+    "deltics",
+    "unicode"
+  ],
+  "copyright":"\u00A92020 Jolyon Direnko-Smith",
+  "language":"en",
+  "content":"source",
+  "dependencies":[
+    "deltics.inc"
+  ],
+  "source":{
+      "files":[
+        "src\\deltics.unicode.inc",
+        "src\\Deltics.Unicode.pas",
+        "src\\Deltics.Unicode.Types.pas"
+      ]
+    }
+}
