@@ -10,7 +10,7 @@
   "language":"en",
   "content":"source",
   "dependencies":[
-    "deltics.inc"
+    "deltics.inc:1.3.0"
   ],
   "source":{
       "files":[
