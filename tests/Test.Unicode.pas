@@ -31,11 +31,12 @@ interface
       procedure Utf8ToCodepointRaisesEInvalidEncodingIfSecondOfTwoContinuationBytesIsInvalid;
       procedure Utf8ToCodepointRaisesEInvalidEncodingIfSecondOfThreeContinuationBytesIsInvalid;
       procedure Utf8ToCodepointRaisesEInvalidEncodingIfThirdOfThreeContinuationBytesIsInvalid;
-      procedure Utf8ToCodepointRaisesENoDataIfArrayIsEmpty;
       procedure Utf8ToCodepointRaisesEMoreDataIfOneRequiredContinuationByteOfOneIsNotAvailable;
       procedure Utf8ToCodepointRaisesEMoreDataIfAtLeastOneRequiredContinuationByteOfTwoIsNotAvailable;
       procedure Utf8ToCodepointRaisesEMoreDataIfAtLeastOneRequiredContinuationByteOfThreeIsNotAvailable;
+      procedure Utf8ToCodepointRaisesENoData;
       procedure Utf8ToUtf16StringsEncodesValidStringCorrectly;
+      procedure Utf8ToCodepointYieldsEmptyArrayIfInputArrayIsEmpty;
     end;
 
 
@@ -172,9 +173,6 @@ implementation
   end;
 
 
-
-
-
   procedure Utils.SurrogatesToCodepointDecodesValidSurrogatesCorrectly;
   var
     sut: Codepoint;
@@ -237,89 +235,119 @@ implementation
   var
     cp: Codepoint;
   begin
-    cp := Unicode.Utf8ToCodepoint(Unicode.CharsToUtf8Array([#$41]));
+    cp := Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$41]));
     Test('Utf8ToCodepoint([$41])').Assert(cp).Equals($41);
 
-    cp := Unicode.Utf8ToCodepoint(Unicode.CharsToUtf8Array([#$c2, #$a9]));
+    cp := Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$c2, #$a9]));
     Test('Utf8ToCodepoint([$c2, $a9])').Assert(cp).Equals($a9);
 
-    cp := Unicode.Utf8ToCodepoint(Unicode.CharsToUtf8Array([#$ed, #$95, #$9c]));
+    cp := Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$ed, #$95, #$9c]));
     Test('Utf8ToCodepoint([$ed, $95, $9c])').Assert(cp).Equals($d55c);
 
-    cp := Unicode.Utf8ToCodepoint(Unicode.CharsToUtf8Array([#$f0, #$90, #$8d, #$88]));
+    cp := Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$f0, #$90, #$8d, #$88]));
     Test('Utf8ToCodepoint([$f0, $90, $8d, $88])').Assert(cp).Equals($10348);
   end;
 
 
-
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfByteIsNotAValidLeadByte;
   begin
-    Test.Raises(EInvalidEncoding, 'FF is not a valid byte in Utf8');
-    Unicode.Utf8ToCodepoint(Unicode.CharsToUtf8Array([#$ff]));
+    Test.Raises(EInvalidEncoding, '0xFF is not a valid byte in Utf8');
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$ff]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfContinuationByteIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$c2, #$20]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfFirstOfThreeContinuationBytesIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$f0, #$20, #$8d, #$88]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfFirstOfTwoContinuationBytesIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$ed, #$20, #$9c]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfSecondOfThreeContinuationBytesIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$f0, #$90, #$20, #$88]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfSecondOfTwoContinuationBytesIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$ed, #$95, #$20]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEInvalidEncodingIfThirdOfThreeContinuationBytesIsInvalid;
   begin
+    Test.Raises(EInvalidEncoding, '0x20 is not a valid continuation byte');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$f0, #$90, #$8d, #$20]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEMoreDataIfAtLeastOneRequiredContinuationByteOfThreeIsNotAvailable;
   begin
+    Test.Raises(EMoreData, '3 continuation bytes required, 2 available');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$f0, #$90, #$8d]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEMoreDataIfAtLeastOneRequiredContinuationByteOfTwoIsNotAvailable;
   begin
+    Test.Raises(EMoreData, '2 continuation bytes required, 1 available');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$ed, #$95]));
   end;
 
 
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToCodepointRaisesEMoreDataIfOneRequiredContinuationByteOfOneIsNotAvailable;
   begin
+    Test.Raises(EMoreData, '1 continuation byte required, 0 available');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([#$c2]));
   end;
 
 
-  procedure Utils.Utf8ToCodepointRaisesENoDataIfArrayIsEmpty;
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Utils.Utf8ToCodepointRaisesENoData;
   begin
+    Test.Raises(ENoData, 'No Utf8 characters available');
 
+    Unicode.Utf8ToCodepoint(Unicode.Utf8Array([]));
   end;
 
 
-
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Utils.Utf8ToUtf16StringsEncodesValidStringCorrectly;
   var
     input: Utf8String;
@@ -342,6 +370,19 @@ implementation
 
     Test('Utf8ToUtf16({input})', [input]).Assert(result).Equals(expectedResult);
   end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Utils.Utf8ToCodepointYieldsEmptyArrayIfInputArrayIsEmpty;
+  var
+    result: Utf8Array;
+  begin
+    result := Unicode.Utf8Array([]);
+
+    Test('Length(result)').Assert(Length(result)).Equals(0);
+  end;
+
+
 
 
 
