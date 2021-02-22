@@ -13,7 +13,6 @@ interface
   type
     Unicode = class
     public
-      class function CharsToUtf8Array(const aChars: array of Utf8Char): Utf8Array;
       class procedure CodepointToSurrogates(const aCodepoint: Codepoint; var aHiSurrogate, aLoSurrogate: WideChar);
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8Array: Utf8Array); overload;
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8: PUtf8Char; var aMaxChars: Integer); overload;
@@ -102,14 +101,6 @@ implementation
     end;
   end;
 
-
-
-  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.CharsToUtf8Array(const aChars: array of Utf8Char): Utf8Array;
-  begin
-    SetLength(result, Length(aChars));
-    CopyMemory(@result[0], @aChars[0], Length(aChars));
-  end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
