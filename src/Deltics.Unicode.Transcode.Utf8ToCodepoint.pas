@@ -36,7 +36,7 @@ implementation
     result := 0;
 
     if aMaxChars < 1 then
-      raise ENoData.Create('Utf8ToCodepoint() requires initial value of aMaxChars > 0');
+      raise ENoData.Create('No Utf8 characters available');
 
     orgPtr    := aUtf8;
     orgChars  := aMaxChars;
@@ -58,12 +58,12 @@ implementation
       else if (leadByte and $f8) = $f0 then
         numContinuationBytes := 3
       else
-        raise EInvalidEncoding.Create('%.2x is not a valid byte in Utf8', [leadByte]);
+        raise EInvalidEncoding.Create('0x%.2x is not a valid byte in Utf8', [leadByte]);
 
       if aMaxChars < numContinuationBytes then
         raise EMoreData.Create('%d continuation %s required, %d available', [
                                 numContinuationBytes,
-                                BYTE_OR_BYTES[numContinuationBytes > 0],
+                                BYTE_OR_BYTES[numContinuationBytes > 1],
                                 aMaxChars]);
 
       case numContinuationBytes of
@@ -77,7 +77,7 @@ implementation
         continuationByte := Byte(aUtf8^);
 
         if (continuationByte and $c0) <> $80 then
-          raise EInvalidEncoding.Create('%.2x is not a valid continuation byte', [continuationByte]);
+          raise EInvalidEncoding.Create('0x%.2x is not a valid continuation byte', [continuationByte]);
 
         Inc(aUtf8);
         Dec(aMaxChars);
