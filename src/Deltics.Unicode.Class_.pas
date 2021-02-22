@@ -21,8 +21,9 @@ interface
       class function Ref(const aChar: WideChar): String; overload;
       class function Ref(const aCodePoint: Codepoint): String; overload;
       class function SurrogatesToCodepoint(const aHiSurrogate, aLoSurrogate: WideChar): Codepoint;
+      class function Utf8Array(const aChars: array of Utf8Char): Utf8Array;
       class function Utf8ToCodepoint(const aUtf8: Utf8Array): Codepoint; overload;
-      class function Utf8ToCodepoint(var aUtf8: PUtf8Char; var aMaxChars: Integer): Codepoint; overload;
+      class function Utf8ToCodepoint(var aUtf8: PUtf8Char; var aUtf8Count: Integer): Codepoint; overload;
       class function Utf8ToUtf16(const aString: Utf8String): UnicodeString; overload;
       class procedure Utf8ToUtf16(var aUtf8: PUtf8Char; var aUtf8Count: Integer; var aUtf16: PWideChar; var aUtf16Count: Integer); overload;
       class function Utf16ToUtf8(const aString: UnicodeString): Utf8String; overload;
@@ -201,6 +202,14 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Utf8Array(const aChars: array of Utf8Char): Utf8Array;
+  begin
+    SetLength(result, Length(aChars));
+    CopyMemory(@result[0], @aChars[0], Length(aChars));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   class function Unicode.Utf8ToCodepoint(const aUtf8: Utf8Array): Codepoint;
   var
     ptr: PUtf8Char;
@@ -215,9 +224,9 @@ implementation
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   class function Unicode.Utf8ToCodepoint(var aUtf8: PUtf8Char;
-                                         var aMaxChars: Integer): Codepoint;
+                                         var aUtf8Count: Integer): Codepoint;
   begin
-    result := _Utf8ToCodepoint(aUtf8, aMaxChars);
+    result := _Utf8ToCodepoint(aUtf8, aUtf8Count);
   end;
 
 
