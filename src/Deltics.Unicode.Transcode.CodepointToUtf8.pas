@@ -49,12 +49,12 @@ implementation
                           aUtf8^ := Utf8Char($f0 or ((aCodepoint shr 18) and $07));
                         end;
     else
-      raise EInvalidCodepoint.Create('%s is not a valid codepoint', [Unicode.Ref(aCodepoint)]);
+      raise EInvalidCodepoint.Create(aCodepoint);
     end;
 
     if numContinuationBytes > aMaxChars then
       raise EUnicode.Create('Codepoint %s requires %d bytes to encode in Utf8 (capacity in buffer is %d)', [
-                            Unicode.Ref(aCodepoint),
+                            Unicode.Index(aCodepoint),
                             numContinuationBytes + 1,
                             aMaxChars]);
 

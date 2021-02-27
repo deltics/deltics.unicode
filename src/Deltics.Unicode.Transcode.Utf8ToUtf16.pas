@@ -35,7 +35,7 @@ implementation
       if code > $ffff then
       begin
         if aUtf16Count = 1 then
-          raise EMoreData.Create('%s requires a surrogate pair but only 1 widechar remains available in the destination buffer', [Unicode.Ref(code)]);
+          raise EMoreData.Create('%s requires a surrogate pair but only 1 widechar remains available in the destination buffer', [Unicode.Index(code)]);
 
         Unicode.CodepointToSurrogates(code, hi, lo);
 
