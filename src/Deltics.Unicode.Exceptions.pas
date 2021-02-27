@@ -23,7 +23,10 @@ interface
     EUnicodeDataloss          = class(EUnicode);
     EUnicodeRequiresMultibyte = class(EUnicode);
     EUnicodeOrphanSurrogate   = class(EUnicode);
-    EInvalidCodepoint         = class(EUnicode);
+    EInvalidCodepoint         = class(EUnicode)
+    public
+      constructor Create(const aCodepoint: Codepoint); overload;
+    end;
 
     EInvalidSurrogate         = class(EUnicode);
       EInvalidHiSurrogate       = class(EInvalidSurrogate);
@@ -36,7 +39,8 @@ interface
 
 implementation
 
-
+  uses
+    Deltics.Unicode;
 
 
 { EUnicode }
@@ -46,6 +50,16 @@ implementation
   begin
     inherited CreateFmt(aMessage, aArgs);
   end;
+
+
+
+{ EInvalidCodepoint }
+
+  constructor EInvalidCodepoint.Create(const aCodepoint: Codepoint);
+  begin
+    inherited Create('%s is not a valid codepoint', [Unicode.Index(aCodepoint)]);
+  end;
+
 
 
 
