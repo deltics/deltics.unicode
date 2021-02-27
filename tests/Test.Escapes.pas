@@ -58,7 +58,7 @@ implementation
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Escapes.Index;
   begin
-    Test('Index(#$0041)').Assert(Unicode.Index(#$0041)).Equals('U+0041');
+    Test('Index(#$0041)').Assert(Unicode.Index(WideChar(#$0041))).Equals('U+0041');
     Test('Index(#$dc00)').Assert(Unicode.Index(#$dc00)).Equals('U+DC00');
 
     Test('Index($10000)').Assert(Unicode.Index($10000)).Equals('U+10000');
@@ -68,7 +68,7 @@ implementation
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Escapes.Json;
   begin
-    Test('Json(#$004a)').Assert(Unicode.Json(#$004a)).Equals('\u004a');
+    Test('Json(#$004a)').Assert(Unicode.Json(WideChar(#$004a))).Equals('\u004a');
     Test('Json(#$804a)').Assert(Unicode.Json(#$804a)).Equals('\u804a');
     Test('Json($10000)').Assert(Unicode.Json($10000)).Equals('\ud800\udc00');
     Test('Json($100000)').Assert(Unicode.Json($100000)).Equals('\udbc0\udc00');
