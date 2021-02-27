@@ -49,6 +49,8 @@ interface
     SysUtils,
     Deltics.Unicode.Bom,
     Deltics.Unicode.Class_,
+    Deltics.Unicode.Escape.Index,
+    Deltics.Unicode.Escape.Json,
     Deltics.Unicode.Exceptions,
     Deltics.Unicode.Types;
 
@@ -81,6 +83,10 @@ interface
     Utf8Array       = Deltics.Unicode.Types.Utf8Array;
     WideCharArray   = Deltics.Unicode.Types.WideCharArray;
     CodepointArray  = Deltics.Unicode.Types.CodepointArray;
+
+  // Escapes
+    UnicodeIndex    = Deltics.Unicode.Escape.Index.UnicodeIndex;
+    JsonEscape      = Deltics.Unicode.Escape.Json.JsonEscape;
 
   // Exceptions
     EUnicode                  = Deltics.Unicode.Exceptions.EUnicode;
