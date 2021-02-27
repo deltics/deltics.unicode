@@ -54,7 +54,8 @@ implementation
       $00010000..$000fffff  : result := 7;
       $00100000..$00ffffff  : result := 8;
       $01000000..$0fffffff  : result := 9;
-      $10000000..$ffffffff  : result := 10;
+    else // $10000000..$ffffffff
+      result := 10;
     end;
   end;
 
