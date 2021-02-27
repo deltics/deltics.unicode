@@ -68,7 +68,7 @@ implementation
 
   class procedure UnicodeIndex.EscapeA(const aCodepoint: Codepoint; const aBuffer: PAnsiChar);
   begin
-    SetBuffer(aBuffer, 'U+' + AnsiHex(aCodepoint, (EscapedLength(aCodepoint) - 2) div 2, TRUE));
+    SetBuffer(aBuffer, 'U+' + AnsiHex(aCodepoint, EscapedLength(aCodepoint) - 2, TRUE));
   end;
 
 
