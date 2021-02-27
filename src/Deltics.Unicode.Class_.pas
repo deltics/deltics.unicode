@@ -16,10 +16,12 @@ interface
       class procedure CodepointToSurrogates(const aCodepoint: Codepoint; var aHiSurrogate, aLoSurrogate: WideChar);
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8Array: Utf8Array); overload;
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8: PUtf8Char; var aMaxChars: Integer); overload;
+      class function Index(const aChar: WideChar): String; overload;
+      class function Index(const aCodepoint: Codepoint): String; overload;
       class function IsHiSurrogate(const aChar: WideChar): Boolean;
       class function IsLoSurrogate(const aChar: WideChar): Boolean;
-      class function Ref(const aChar: WideChar): String; overload;
-      class function Ref(const aCodePoint: Codepoint): String; overload;
+      class function Json(const aChar: WideChar): String; overload;
+      class function Json(const aCodepoint: Codepoint): String; overload;
       class function SurrogatesToCodepoint(const aHiSurrogate, aLoSurrogate: WideChar): Codepoint;
       class function Utf8Array(const aChars: array of Utf8Char): Utf8Array;
       class function Utf8ToCodepoint(const aUtf8: Utf8Array): Codepoint; overload;
@@ -28,6 +30,15 @@ interface
       class procedure Utf8ToUtf16(var aUtf8: PUtf8Char; var aUtf8Count: Integer; var aUtf16: PWideChar; var aUtf16Count: Integer); overload;
       class function Utf16ToUtf8(const aString: UnicodeString): Utf8String; overload;
       class procedure Utf16ToUtf8(var aUtf16: PWideChar; var aUtf16Count: Integer; var aUtf8: PUtf8Char; var aUtf8Count: Integer); overload;
+
+      class function Escape(const aChar: WideChar; const aEncoder: UnicodeEscape): String; overload;
+      class function Escape(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): String; overload;
+      class function EscapeA(const aChar: WideChar; const aEncoder: UnicodeEscape): AnsiString; overload;
+      class function EscapeA(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): AnsiString; overload;
+      class function EscapeUtf8(const aChar: WideChar; const aEncoder: UnicodeEscape): Utf8String; overload;
+      class function EscapeUtf8(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): Utf8String; overload;
+      class function EscapeW(const aChar: WideChar; const aEncoder: UnicodeEscape): UnicodeString; overload;
+      class function EscapeW(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): UnicodeString; overload;
     end;
 
 
@@ -41,6 +52,8 @@ implementation
   uses
     SysUtils,
     Windows,
+    Deltics.Unicode.Escape.Index,
+    Deltics.Unicode.Escape.Json,
     Deltics.Unicode.Exceptions,
     Deltics.Unicode.Transcode.CodepointToUtf8,
     Deltics.Unicode.Transcode.Utf8ToCodepoint,
@@ -112,13 +125,13 @@ implementation
     codepoint: Deltics.Unicode.Types.Codepoint;
   begin
     if (aCodepoint > MAX_Codepoint) then
-      raise EInvalidCodepoint.Create('%s is not a valid codepoint', [Ref(aCodepoint)]);
+      raise EInvalidCodepoint.Create(aCodepoint);
 
     if ((aCodepoint >= MIN_Surrogate) and (aCodepoint <= MAX_Surrogate)) then
-      raise EInvalidCodepoint.Create('The codepoint %s is reserved for surrogate encoding', [Ref(aCodepoint)]);
+      raise EInvalidCodepoint.Create('The codepoint %s is reserved for surrogate encoding', [Index(aCodepoint)]);
 
     if (aCodepoint < MIN_Supplemental) then
-      raise EInvalidCodepoint.Create('The codepoint %s is not in the Supplementary Plane', [Ref(aCodepoint)]);
+      raise EInvalidCodepoint.Create('The codepoint %s is not in the Supplementary Plane', [Index(aCodepoint)]);
 
     codepoint := aCodepoint - $10000;
 
@@ -155,6 +168,92 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Escape(const aChar: WideChar; const aEncoder: UnicodeEscape): String;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aChar));
+  {$ifdef UNICODE}
+    aEncoder.EscapeW(aChar, PWideChar(result));
+  {$else}
+    aEncoder.EscapeA(aChar, PAnsiChar(result));
+  {$endif}
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Escape(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): String;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aCodepoint));
+  {$ifdef UNICODE}
+    aEncoder.EscapeW(aCodepoint, PWideChar(result));
+  {$else}
+    aEncoder.EscapeA(aCodepoint, PAnsiChar(result));
+  {$endif}
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeA(const aChar: WideChar; const aEncoder: UnicodeEscape): AnsiString;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aChar));
+    aEncoder.EscapeA(aChar, PAnsiChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeA(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): AnsiString;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aCodepoint));
+    aEncoder.EscapeA(aCodepoint, PAnsiChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeUtf8(const aChar: WideChar; const aEncoder: UnicodeEscape): Utf8String;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aChar));
+    aEncoder.EscapeA(aChar, PAnsiChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeUtf8(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): Utf8String;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aCodepoint));
+    aEncoder.EscapeA(aCodepoint, PAnsiChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeW(const aChar: WideChar; const aEncoder: UnicodeEscape): UnicodeString;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aChar));
+    aEncoder.EscapeW(aChar, PWideChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.EscapeW(const aCodePoint: Codepoint; const aEncoder: UnicodeEscape): UnicodeString;
+  begin
+    SetLength(result, aEncoder.EscapedLength(aCodepoint));
+    aEncoder.EscapeW(aCodepoint, PWideChar(result));
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Index(const aChar: WideChar): String;
+  begin
+    result := Escape(aChar, UnicodeIndex);
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Index(const aCodepoint: Codepoint): String;
+  begin
+    result := Escape(aCodepoint, UnicodeIndex);
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   class function Unicode.IsHiSurrogate(const aChar: WideChar): Boolean;
   begin
     result := (aChar >= MIN_HiSurrogate) and (aChar <= MAX_HiSurrogate);
@@ -169,19 +268,16 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Ref(const aChar: WideChar): String;
+  class function Unicode.Json(const aChar: WideChar): String;
   begin
-    result := Format('U+%.4x', [Word(aChar)]);
+    result := Escape(aChar, JsonEscape);
   end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Ref(const aCodePoint: Codepoint): String;
+  class function Unicode.Json(const aCodepoint: Codepoint): String;
   begin
-    if (aCodepoint < $1000) then
-      result := 'U+' + Format('%.4x', [aCodepoint])
-    else
-      result := 'U+' + Trim(Format('%8x', [aCodepoint]));
+    result := Escape(aCodepoint, JsonEscape);
   end;
 
 
@@ -190,10 +286,10 @@ implementation
                                                const aLoSurrogate: WideChar): Codepoint;
   begin
     if NOT IsHiSurrogate(aHiSurrogate) then
-      raise EInvalidHiSurrogate.Create('%s is not a valid high surrogate character', [Ref(aHiSurrogate)]);
+      raise EInvalidHiSurrogate.Create('%s is not a valid high surrogate character', [Index(aHiSurrogate)]);
 
     if NOT IsLoSurrogate(aLoSurrogate) then
-      raise EInvalidLoSurrogate.Create('%s is not a valid low surrogate character', [Ref(aLoSurrogate)]);
+      raise EInvalidLoSurrogate.Create('%s is not a valid low surrogate character', [Index(aLoSurrogate)]);
 
     result := ((Word(aHiSurrogate) - $d800) shl 10)
             + (Word(aLoSurrogate) - $dc00)
@@ -292,6 +388,7 @@ implementation
   begin
     _Utf16ToUtf8(aUtf16, aUtf16Count, aUtf8, aUtf8Count);
   end;
+
 
 
 
