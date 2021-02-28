@@ -18,12 +18,15 @@
         "src\\Deltics.Unicode.pas",
         "src\\Deltics.Unicode.Bom.pas",
         "src\\Deltics.Unicode.Class_.pas",
+        "src\\Deltics.Unicode.Escape.Index.pas",
+        "src\\Deltics.Unicode.Escape.Json.pas",
         "src\\Deltics.Unicode.Exceptions.pas",
         "src\\Deltics.Unicode.Transcode.CodepointToUtf8.pas",
         "src\\Deltics.Unicode.Transcode.Utf8ToCodepoint.pas",
         "src\\Deltics.Unicode.Transcode.Utf8ToUtf16.pas",
         "src\\Deltics.Unicode.Transcode.Utf16ToUtf8.pas",
-        "src\\Deltics.Unicode.Types.pas"
+        "src\\Deltics.Unicode.Types.pas",
+        "src\\Deltics.Unicode.Utils.pas"
       ]
     }
 }
