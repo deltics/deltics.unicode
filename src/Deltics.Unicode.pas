@@ -84,6 +84,13 @@ interface
     WideCharArray   = Deltics.Unicode.Types.WideCharArray;
     CodepointArray  = Deltics.Unicode.Types.CodepointArray;
 
+  // String array types
+    AnsiStringArray     = Deltics.Unicode.Types.AnsiStringArray;
+    AsciiStringArray    = Deltics.Unicode.Types.AsciiStringArray;
+    UnicodeStringArray  = Deltics.Unicode.Types.UnicodeStringArray;
+    Utf8StringArray     = Deltics.Unicode.Types.Utf8StringArray;
+    WideStringArray     = Deltics.Unicode.Types.WideStringArray;
+
   // Escapes
     UnicodeIndex    = Deltics.Unicode.Escape.Index.UnicodeIndex;
     JsonEscape      = Deltics.Unicode.Escape.Json.JsonEscape;

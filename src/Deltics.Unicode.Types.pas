@@ -34,6 +34,14 @@ interface
     WideCharArray   = array of WideChar;
     CodepointArray  = array of Codepoint;
 
+  // Dynamic arrays of String types
+
+    AnsiStringArray     = array of AnsiString;
+    AsciiStringArray    = array of AsciiString;
+    UnicodeStringArray  = array of UnicodeString;
+    Utf8StringArray     = array of Utf8String;
+    WideStringArray     = array of WideString;
+
   // Character/Codepoint Escape Encoders
 
     UnicodeEscapeBase = class
