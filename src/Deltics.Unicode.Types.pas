@@ -41,7 +41,7 @@ interface
 
   // Dynamic arrays of Character types
 
-    AnsiArray       = array of AnsiChar;
+    AnsiCharArray   = array of AnsiChar;
     AsciiArray      = array of AsciiChar;
     CharArray       = array of Char;
     Utf8Array       = array of Utf8Char;
@@ -49,6 +49,7 @@ interface
     Utf32Array      = array of Utf32Char;
     WideCharArray   = array of WideChar;
     CodepointArray  = array of Codepoint;
+
 
   // Dynamic arrays of String types
 

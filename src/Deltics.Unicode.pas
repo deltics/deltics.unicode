@@ -93,6 +93,7 @@ interface
 
   // Char array types
     AsciiArray      = Deltics.Unicode.Types.AsciiChar;
+    AnsiCharArray   = Deltics.Unicode.Types.AnsiCharArray;
     CharArray       = Deltics.Unicode.Types.CharArray;
     Utf8Array       = Deltics.Unicode.Types.Utf8Array;
     Utf16Array      = Deltics.Unicode.Types.Utf16Array;
@@ -103,7 +104,7 @@ interface
   // String array types
     AnsiStringArray     = Deltics.Unicode.Types.AnsiStringArray;
     AsciiStringArray    = Deltics.Unicode.Types.AsciiStringArray;
-    StringArray     = Deltics.Unicode.Types.StringArray;
+    StringArray         = Deltics.Unicode.Types.StringArray;
     UnicodeStringArray  = Deltics.Unicode.Types.UnicodeStringArray;
     Utf8StringArray     = Deltics.Unicode.Types.Utf8StringArray;
     WideStringArray     = Deltics.Unicode.Types.WideStringArray;
