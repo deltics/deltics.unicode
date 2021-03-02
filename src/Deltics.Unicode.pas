@@ -1,7 +1,7 @@
 {
   * X11 (MIT) LICENSE *
 
-  Copyright © 2013 Jolyon Smith
+  Copyright © 2020 Jolyon Smith
 
   Permission is hereby granted, free of charge, to any person obtaining a copy of
    this software and associated documentation files (the "Software"), to deal in
@@ -45,8 +45,8 @@
 interface
 
   uses
-    Classes,
     SysUtils,
+    Deltics.Strings.Types,
     Deltics.Unicode.Bom,
     Deltics.Unicode.Class_,
     Deltics.Unicode.Escape.Index,
@@ -54,12 +54,9 @@ interface
     Deltics.Unicode.Exceptions,
     Deltics.Unicode.Types;
 
+  {$i deltics.strings.types.aliases.inc}
 
   type
-  // Codepoint
-    Codepoint         = Deltics.Unicode.Types.Codepoint;
-    PCodepoint        = Deltics.Unicode.Types.PCodepoint;
-
   // Bom types
     TBom        = Deltics.Unicode.Bom.TBom;
 
@@ -69,48 +66,8 @@ interface
     Utf32Bom    = Deltics.Unicode.Bom.Utf32Bom;
     Utf32LEBom  = Deltics.Unicode.Bom.Utf32LEBom;
 
-  // String types
-   {AnsiString}
-    AsciiString       = Deltics.Unicode.Types.AsciiString;
-    UnicodeString     = Deltics.Unicode.Types.UnicodeString;
-    Utf8String        = Deltics.Unicode.Types.Utf8String;
-   {WideString}
-
-  // Char types
-   {AnsiChar}
-    AsciiChar         = Deltics.Unicode.Types.AsciiChar;
-    Utf8Char          = Deltics.Unicode.Types.Utf8Char;
-    Utf16Char         = Deltics.Unicode.Types.Utf16Char;
-    Utf32Char         = Deltics.Unicode.Types.Utf32Char;
-   {WideChar}
-
-   {PAnsiChar}
-    PAsciiChar        = Deltics.Unicode.Types.PAsciiChar;
-    PUtf8Char         = Deltics.Unicode.Types.PUtf8Char;
-    PUtf16Char        = Deltics.Unicode.Types.PUtf16Char;
-    PUtf32Char        = Deltics.Unicode.Types.PUtf32Char;
-   {PWideChar}
-
-  // Char array types
-    AsciiArray      = Deltics.Unicode.Types.AsciiChar;
-    AnsiCharArray   = Deltics.Unicode.Types.AnsiCharArray;
-    CharArray       = Deltics.Unicode.Types.CharArray;
-    Utf8Array       = Deltics.Unicode.Types.Utf8Array;
-    Utf16Array      = Deltics.Unicode.Types.Utf16Array;
-    Utf32Array      = Deltics.Unicode.Types.Utf32Array;
-    WideCharArray   = Deltics.Unicode.Types.WideCharArray;
-    CodepointArray  = Deltics.Unicode.Types.CodepointArray;
-
-  // String array types
-    AnsiStringArray     = Deltics.Unicode.Types.AnsiStringArray;
-    AsciiStringArray    = Deltics.Unicode.Types.AsciiStringArray;
-    StringArray         = Deltics.Unicode.Types.StringArray;
-    UnicodeStringArray  = Deltics.Unicode.Types.UnicodeStringArray;
-    Utf8StringArray     = Deltics.Unicode.Types.Utf8StringArray;
-    WideStringArray     = Deltics.Unicode.Types.WideStringArray;
-
-  // Escapes
-    UnicodeIndex    = Deltics.Unicode.Escape.Index.UnicodeIndex;
+  // Escapes
+    UnicodeIndex    = Deltics.Unicode.Escape.Index.UnicodeIndex;
     JsonEscape      = Deltics.Unicode.Escape.Json.JsonEscape;
 
   // Exceptions
