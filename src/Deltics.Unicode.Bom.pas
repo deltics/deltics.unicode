@@ -10,9 +10,6 @@ interface
 
 
   type
-    TBom = array of Byte;
-
-
     Utf8Bom = class
       class function AsBytes: TBom;
       class function AsString: Utf8String;

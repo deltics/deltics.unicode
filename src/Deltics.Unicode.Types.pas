@@ -7,12 +7,15 @@
 interface
 
   uses
-    Deltics.Strings.Types;
+    Deltics.StringTypes;
 
-  {$i deltics.strings.types.aliases.inc}
+  {$i deltics.stringtypes.aliases.inc}
 
 
   type
+    TBom = array of Byte;
+
+
   // Base class for escape classes
     UnicodeEscapeBase = class
     public

@@ -46,7 +46,7 @@ interface
 
   uses
     SysUtils,
-    Deltics.Strings.Types,
+    Deltics.StringTypes,
     Deltics.Unicode.Bom,
     Deltics.Unicode.Class_,
     Deltics.Unicode.Escape.Index,
@@ -54,11 +54,11 @@ interface
     Deltics.Unicode.Exceptions,
     Deltics.Unicode.Types;
 
-  {$i deltics.strings.types.aliases.inc}
+  {$i deltics.stringtypes.aliases.inc}
 
   type
   // Bom types
-    TBom        = Deltics.Unicode.Bom.TBom;
+    TBom        = Deltics.Unicode.Types.TBom;
 
     Utf8Bom     = Deltics.Unicode.Bom.Utf8Bom;
     Utf16Bom    = Deltics.Unicode.Bom.Utf16Bom;
