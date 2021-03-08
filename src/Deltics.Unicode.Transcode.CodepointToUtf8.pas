@@ -54,7 +54,7 @@ implementation
 
     if numContinuationBytes > aMaxChars then
       raise EUnicode.Create('Codepoint %s requires %d bytes to encode in Utf8 (capacity in buffer is %d)', [
-                            Unicode.Index(aCodepoint),
+                            Unicode.Ref(aCodepoint),
                             numContinuationBytes + 1,
                             aMaxChars]);
 

@@ -57,7 +57,7 @@ implementation
 
   constructor EInvalidCodepoint.Create(const aCodepoint: Codepoint);
   begin
-    inherited Create('%s is not a valid codepoint', [Unicode.Index(aCodepoint)]);
+    inherited Create('%s is not a valid codepoint', [Unicode.Ref(aCodepoint)]);
   end;
 
 

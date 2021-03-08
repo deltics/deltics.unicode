@@ -13,15 +13,16 @@ interface
   type
     Unicode = class
     public
+      class function AnsiCharToWide(const aChar: AnsiChar): WideChar;
       class procedure CodepointToSurrogates(const aCodepoint: Codepoint; var aHiSurrogate, aLoSurrogate: WideChar);
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8Array: Utf8Array); overload;
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8: PUtf8Char; var aMaxChars: Integer); overload;
-      class function Index(const aChar: WideChar): String; overload;
-      class function Index(const aCodepoint: Codepoint): String; overload;
       class function IsHiSurrogate(const aChar: WideChar): Boolean;
       class function IsLoSurrogate(const aChar: WideChar): Boolean;
       class function Json(const aChar: WideChar): String; overload;
       class function Json(const aCodepoint: Codepoint): String; overload;
+      class function Ref(const aChar: WideChar): String; overload;
+      class function Ref(const aCodepoint: Codepoint): String; overload;
       class function SurrogatesToCodepoint(const aHiSurrogate, aLoSurrogate: WideChar): Codepoint;
       class function Utf8Array(const aChars: array of Utf8Char): Utf8Array;
       class function Utf8ToCodepoint(const aUtf8: Utf8Array): Codepoint; overload;
@@ -240,14 +241,14 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Index(const aChar: WideChar): String;
+  class function Unicode.Ref(const aChar: WideChar): String;
   begin
     result := Escape(aChar, UnicodeIndex);
   end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Index(const aCodepoint: Codepoint): String;
+  class function Unicode.Ref(const aCodepoint: Codepoint): String;
   begin
     result := Escape(aCodepoint, UnicodeIndex);
   end;
