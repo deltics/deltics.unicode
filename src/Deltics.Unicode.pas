@@ -62,9 +62,9 @@ interface
 
     Utf8Bom     = Deltics.Unicode.Bom.Utf8Bom;
     Utf16Bom    = Deltics.Unicode.Bom.Utf16Bom;
-    Utf16LEBom  = Deltics.Unicode.Bom.Utf16LEBom;
+    Utf16LeBom  = Deltics.Unicode.Bom.Utf16LeBom;
     Utf32Bom    = Deltics.Unicode.Bom.Utf32Bom;
-    Utf32LEBom  = Deltics.Unicode.Bom.Utf32LEBom;
+    Utf32LeBom  = Deltics.Unicode.Bom.Utf32LeBom;
 
   // Escapes
     UnicodeIndex    = Deltics.Unicode.Escape.Index.UnicodeIndex;
@@ -96,7 +96,6 @@ interface
 
 
 implementation
-
 
 
 
