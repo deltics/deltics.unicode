@@ -58,10 +58,10 @@ implementation
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Escapes.Index;
   begin
-    Test('Index(#$0041)').Assert(Unicode.Index(WideChar(#$0041))).Equals('U+0041');
-    Test('Index(#$dc00)').Assert(Unicode.Index(#$dc00)).Equals('U+DC00');
+    Test('Index(#$0041)').Assert(Unicode.Ref(WideChar(#$0041))).Equals('U+0041');
+    Test('Index(#$dc00)').Assert(Unicode.Ref(#$dc00)).Equals('U+DC00');
 
-    Test('Index($10000)').Assert(Unicode.Index($10000)).Equals('U+10000');
+    Test('Index($10000)').Assert(Unicode.Ref($10000)).Equals('U+10000');
   end;
 
 

@@ -37,6 +37,7 @@ interface
       procedure Utf8ToCodepointRaisesENoData;
       procedure Utf8ToUtf16StringsEncodesValidStringCorrectly;
       procedure Utf8ToCodepointYieldsEmptyArrayIfInputArrayIsEmpty;
+      procedure AnsiToWideToAnsi;
     end;
 
 
@@ -55,6 +56,21 @@ implementation
 
 
 { UnicodeUtils }
+
+  procedure Utils.AnsiToWideToAnsi;
+  var
+    c: AnsiChar;
+    w: WideChar;
+    o: AnsiChar;
+  begin
+    for o := #0 to #255 do
+    begin
+      w := Unicode.AnsiCharToWide(o);
+      c := Unicode.WideCharToAnsi(w);
+      Test('AnsiCharToWide -> WideCharToAnsi').Assert(c).Equals(o);
+    end;
+  end;
+
 
   procedure Utils.CodepointToSurrogateEncodesValidSurrogatesCorrectly;
   var
