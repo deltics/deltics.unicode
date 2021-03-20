@@ -19,8 +19,8 @@ interface
       class procedure CodepointToUtf8(const aCodepoint: Codepoint; var aUtf8: PUtf8Char; var aMaxChars: Integer); overload;
       class function IsHiSurrogate(const aChar: WideChar): Boolean;
       class function IsLoSurrogate(const aChar: WideChar): Boolean;
-      class function Json(const aChar: WideChar): String; overload;
-      class function Json(const aCodepoint: Codepoint): String; overload;
+      class function Json(const aChar: WideChar): Utf8String; overload;
+      class function Json(const aCodepoint: Codepoint): Utf8String; overload;
       class function Ref(const aChar: WideChar): String; overload;
       class function Ref(const aCodepoint: Codepoint): String; overload;
       class function SurrogatesToCodepoint(const aHiSurrogate, aLoSurrogate: WideChar): Codepoint;
@@ -282,20 +282,6 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Ref(const aChar: WideChar): String;
-  begin
-    result := Escape(aChar, UnicodeIndex);
-  end;
-
-
-  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Ref(const aCodepoint: Codepoint): String;
-  begin
-    result := Escape(aCodepoint, UnicodeIndex);
-  end;
-
-
-  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   class function Unicode.IsHiSurrogate(const aChar: WideChar): Boolean;
   begin
     result := (aChar >= MIN_HiSurrogate) and (aChar <= MAX_HiSurrogate);
@@ -310,16 +296,30 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Json(const aChar: WideChar): String;
+  class function Unicode.Json(const aChar: WideChar): Utf8String;
   begin
-    result := Escape(aChar, JsonEscape);
+    result := EscapeUtf8(aChar, JsonEscape);
   end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  class function Unicode.Json(const aCodepoint: Codepoint): String;
+  class function Unicode.Json(const aCodepoint: Codepoint): Utf8String;
   begin
-    result := Escape(aCodepoint, JsonEscape);
+    result := Escapeutf8(aCodepoint, JsonEscape);
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Ref(const aChar: WideChar): String;
+  begin
+    result := Escape(aChar, UnicodeIndex);
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  class function Unicode.Ref(const aCodepoint: Codepoint): String;
+  begin
+    result := Escape(aCodepoint, UnicodeIndex);
   end;
 
 
@@ -464,6 +464,7 @@ implementation
 
     raise EUnicode.Create('{char} does not map to a single-byte AnsiChar.  Use Ansi.FromWide(PWideChar) instead.', [Ref(aChar)]);
   end;
+
 
 
 

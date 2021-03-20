@@ -58,20 +58,20 @@ implementation
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Escapes.Index;
   begin
-    Test('Index(#$0041)').Assert(Unicode.Ref(WideChar(#$0041))).Equals('U+0041');
-    Test('Index(#$dc00)').Assert(Unicode.Ref(#$dc00)).Equals('U+DC00');
+    Test('Index(#$0041)').Assert(Unicode.Escape(WideChar(#$0041), UnicodeIndex)).Equals('U+0041');
+    Test('Index(#$dc00)').Assert(Unicode.Escape(#$dc00, UnicodeIndex)).Equals('U+DC00');
 
-    Test('Index($10000)').Assert(Unicode.Ref($10000)).Equals('U+10000');
+    Test('Index($10000)').Assert(Unicode.Escape($10000, UnicodeIndex)).Equals('U+10000');
   end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Escapes.Json;
   begin
-    Test('Json(#$004a)').Assert(Unicode.Json(WideChar(#$004a))).Equals('\u004a');
-    Test('Json(#$804a)').Assert(Unicode.Json(#$804a)).Equals('\u804a');
-    Test('Json($10000)').Assert(Unicode.Json($10000)).Equals('\ud800\udc00');
-    Test('Json($100000)').Assert(Unicode.Json($100000)).Equals('\udbc0\udc00');
+    Test('Json(#$004a)').Assert(Unicode.Escape(WideChar(#$004a), JsonEscape)).Equals('\u004a');
+    Test('Json(#$804a)').Assert(Unicode.Escape(#$804a, JsonEscape)).Equals('\u804a');
+    Test('Json($10000)').Assert(Unicode.Escape($10000, JsonEscape)).Equals('\ud800\udc00');
+    Test('Json($100000)').Assert(Unicode.Escape($100000, JsonEscape)).Equals('\udbc0\udc00');
   end;
 
 
