@@ -11,7 +11,7 @@
   "content":"source",
   "dependencies":[
     "deltics.inc:1.3.0",
-    "deltics.stringtypes:1.1.0"
+    "deltics.stringtypes:1.1.1"
   ],
   "source":{
       "files":[
